@@ -1,0 +1,22 @@
+<!doctype HTML>
+{% load static %}
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <h1>Timer</h1>
+    <p>Pomodoro Schedule:
+      <ul>
+        <li>Work: {{ sched.work_time }}</li>
+        <li>Rest: {{ sched.rest_time }}</li>
+      </ul>
+    </p>
+    <div id="timer">
+      <h1 id="current-count">00:00</h1>
+    </div>
+    <script src="{% static 'js/timer.js' %}"></script>
+  </body>
+</html>
