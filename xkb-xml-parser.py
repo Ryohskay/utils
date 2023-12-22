@@ -1,5 +1,31 @@
 import xml.etree.ElementTree as et
 
+# get inputs
+layout_alias = input("Two letter name for your keyboard layout: ")
+layout_name = input("Name of your layout (usually language name in English): ")
+lang_code = input("The ISO-639-2/B language code for your layout (cf. https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes)\n")
+
+# prompt for adding variants
+add_variants = input("Would you like to add more variants? [N/y]: ")
+if (add_variants.upper() = "N") || add_variants == "" :
+    print("Not adding variants.")
+elif add_variants = "y":
+    print("Adding variants ...")
+    c = True
+    variant_dicts = []
+
+    while c:
+        # add variant to the list
+        n = input("Keyboard variant alias? ('simple', 'dvorak', etc.): ")
+        desc = layout_name + ' ' + n
+        variant_dicts.append({ 'name': n, 'desc': desc })
+
+        # prompt whether to continue adding variants
+        more_variant = input("Add another variant? [N/y]: ")
+        if more_variant.upper() != "Y":
+            print("Finished adding variants.")
+            c = False
+
 with open('/usr/share/X11/xkb/rules/evdev.xml') as f:
     t = et.parse(f)
 
@@ -16,19 +42,18 @@ with open('/usr/share/X11/xkb/rules/evdev.xml') as f:
     kb_config = et.SubElement(layout, 'configItem')
     # set the keyboard name
     kb_name = et.SubElement(kb_config, 'name')
-    kb_name.text = 'ns'
+    kb_name.text = layout_alias
     # set the keyboard descriptions
     kb_short = et.SubElement(kb_config, 'shortDescription')
-    kb_short.text = 'ns'
+    kb_short.text = layout_alias
     kb_desc = et.SubElement(kb_config, 'description')
-    kb_desc.text = 'Notosic'
+    kb_desc.text = layout_name
 
     lang_list = et.SubElement(kb_config, 'languageList')
     lang = et.SubElement(lang_list, 'iso639Id')
     lang.text = 'gre' # ISO-639-2/B
 
     variant_list = et.SubElement(layout, 'variantList')
-    variant_dicts = [{ 'name': 'simple', 'desc': 'Notosic (simple)' }]
     
     if len(variant_dicts) > 0:
         for v in variant_dicts:
